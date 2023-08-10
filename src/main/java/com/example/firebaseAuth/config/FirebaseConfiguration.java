@@ -20,17 +20,28 @@ public class FirebaseConfiguration {
     Resource resourceFile;
 
 
-    @Bean
-    public FirebaseAuth firebaseAuth() {
-        return FirebaseAuth.getInstance();
-    }
+//    @Bean
+//    public FirebaseAuth firebaseAuth() {
+//        return FirebaseAuth.getInstance();
+//    }
 
-    @PostConstruct
-    public void initializeFirebaseApp() throws IOException {
-        FirebaseOptions options = new FirebaseOptions.Builder()
+    @Bean
+    FirebaseAuth firebaseAuth() throws IOException {
+        var options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(resourceFile.getInputStream()))
                 .build();
-        FirebaseApp.initializeApp(options);
+
+        var firebaseApp = FirebaseApp.initializeApp(options);
+
+        return FirebaseAuth.getInstance(firebaseApp);
     }
+
+//    @PostConstruct
+//    public void initializeFirebaseApp() throws IOException {
+//        FirebaseOptions options = new FirebaseOptions.Builder()
+//                .setCredentials(GoogleCredentials.fromStream(resourceFile.getInputStream()))
+//                .build();
+//        FirebaseApp.initializeApp(options);
+//    }
 
 }
